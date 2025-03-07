@@ -1,0 +1,26 @@
+- name: My first play
+  hosts: myhosts
+  become: true
+  tasks:
+   - name: Ping my hosts
+     ansible.builtin.ping:
+
+   - name: Update all packages to their latest version
+     ansible.builtin.apt:
+       name: "*"
+       state: latest
+
+   - name: install qemu guest agent
+     ansible.builtin.apt:
+       name: qemu-guest-agent
+       state: present
+
+   - name: enable qemu guest agent
+     ansible.builtin.systemd_service:
+       name: qemu-guest-agent
+       enabled: true
+
+   - name: restart qemu guest agent
+     ansible.builtin.systemd_service:
+       name: qemu-guest-agent
+       state: restarted
