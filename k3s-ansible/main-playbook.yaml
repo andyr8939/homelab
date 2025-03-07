@@ -5,6 +5,12 @@
    - name: Ping my hosts
      ansible.builtin.ping:
 
+   - name: Set authorized key taken from file
+     ansible.posix.authorized_key:
+       user: andy
+       state: present
+       key: "{{ lookup('file', '/home/andy/.ssh/id_ed25519.pub') }}"
+
    - name: Update all packages to their latest version
      ansible.builtin.apt:
        name: "*"
