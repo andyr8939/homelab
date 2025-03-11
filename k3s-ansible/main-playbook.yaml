@@ -30,3 +30,15 @@
      ansible.builtin.systemd_service:
        name: qemu-guest-agent
        state: restarted
+
+   - name: Extend the logical volume of ubuntu-lv
+     community.general.lvol:
+      vg: ubuntu-vg
+      lv: ubuntu-lv
+      size: +100%FREE
+
+   - name: Extend Filesystem of ubuntu--vg-ubuntu--lv
+     community.general.filesystem:
+      dev: /dev/mapper/ubuntu--vg-ubuntu--lv
+      fstype: ext4
+      resizefs: true
