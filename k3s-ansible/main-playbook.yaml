@@ -42,3 +42,45 @@
       dev: /dev/mapper/ubuntu--vg-ubuntu--lv
       fstype: ext4
       resizefs: true
+
+   - name: Allow everything and enable UFW
+     community.general.ufw:
+       state: enabled
+       policy: allow
+
+   - name: Install K3s
+     ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -s - --tls-san {{ inventory_hostname }}
+     args:
+      creates: /etc/rancher/k3s/k3s.yaml
+      
+   - name: Fetch the K3s kubeconfig file
+     fetch:
+       src: /etc/rancher/k3s/k3s.yaml
+       dest: ./kubeconfigs/{{ inventory_hostname }}.yaml
+       flat: yes
+
+   - name: Replace the server IP in kubeconfig
+     delegate_to: localhost
+     become: false
+     replace:
+       path: ./kubeconfigs/{{ inventory_hostname }}.yaml
+       regexp: 'https://127.0.0.1:6443'
+       replace: 'https://{{ inventory_hostname }}:6443'
+
+   - name: Replace the server default with name in kubeconfig
+     delegate_to: localhost
+     become: false
+     replace:
+       path: ./kubeconfigs/{{ inventory_hostname }}.yaml
+       regexp: 'default'
+       replace: '{{ inventory_hostname }}'
+
+   - name: Merge kubeconfigs
+     delegate_to: localhost
+     become: false
+     shell: |
+       export KUBECONFIG=$(echo ~/homelab/k3s-ansible/kubeconfigs/*.yaml | tr ' ' ':')
+       kubectl config view --merge --flatten > ~/.kube/config
+     args:
+       executable: /bin/bash
+  
