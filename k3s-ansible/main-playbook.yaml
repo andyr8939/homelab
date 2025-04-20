@@ -9,7 +9,7 @@
      ansible.posix.authorized_key:
        user: andy
        state: present
-       key: "{{ lookup('file', '/home/andy/.ssh/id_ed25519.pub') }}"
+       key: "{{ lookup('file', '/home/andy/.ssh/authorized_keys') }}"
 
    - name: Update all packages to their latest version
      ansible.builtin.apt:
@@ -52,7 +52,7 @@
      ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -s - --tls-san {{ inventory_hostname }}
      args:
       creates: /etc/rancher/k3s/k3s.yaml
-      
+
    - name: Fetch the K3s kubeconfig file
      fetch:
        src: /etc/rancher/k3s/k3s.yaml
@@ -83,4 +83,10 @@
        kubectl config view --merge --flatten > ~/.kube/config
      args:
        executable: /bin/bash
-  
+
+  handlers:
+    - name: Restart k3s
+      systemd:
+        name: k3s
+        state: restarted
+        daemon_reload: yes
