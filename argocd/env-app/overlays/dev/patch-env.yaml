@@ -11,4 +11,4 @@ spec:
             - name: ENVIRONMENT
               value: "dev"
             - name: CLUSTER_NAME
-              value: "dev-cluster"
+              value: "k3s-1.home"

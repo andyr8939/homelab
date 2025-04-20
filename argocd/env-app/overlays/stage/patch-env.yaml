@@ -11,4 +11,4 @@ spec:
             - name: ENVIRONMENT
               value: "stage"
             - name: CLUSTER_NAME
-              value: "dev-cluster"
+              value: "k3s-2.home"
