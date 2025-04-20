@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: env-app
+spec:
+  template:
+    spec:
+      containers:
+        - name: env-app
+          env:
+            - name: ENVIRONMENT
+              value: "dev"
+            - name: CLUSTER_NAME
+              value: "dev-cluster"

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: env-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: env-app
+  template:
+    metadata:
+      labels:
+        app: env-app
+    spec:
+      containers:
+        - name: env-app
+          image: monopot/homelab-env-test:0.2
+          ports:
+            - containerPort: 80
+          env:
+            - name: ENVIRONMENT
+              value: "unknown"  # gets patched
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CLUSTER_NAME
+              value: "unknown"  # gets patched
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: env-app
+spec:
+  selector:
+    app: env-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
