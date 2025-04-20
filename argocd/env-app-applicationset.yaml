@@ -3,6 +3,8 @@ kind: ApplicationSet
 metadata:
   name: env-app-set
   namespace: argocd
+  labels:
+    application: env-app
 spec:
   generators:
     - list:
