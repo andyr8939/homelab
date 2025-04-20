@@ -30,15 +30,3 @@ spec:
                   fieldPath: status.podIP
             - name: CLUSTER_NAME
               value: "unknown"  # gets patched
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: env-app
-spec:
-  selector:
-    app: env-app
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
