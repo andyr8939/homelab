@@ -8,3 +8,12 @@ metadata:
 spec:
   rules:
     - host: k3s-3.home  # gets patched
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: env-web
+                port:
+                  number: 80
