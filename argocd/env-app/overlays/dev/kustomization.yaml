@@ -2,3 +2,4 @@ resources:
   - ../../base
 patchesStrategicMerge:
   - patch-env.yaml
+  - patch-ingress.yaml
