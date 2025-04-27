@@ -5,6 +5,8 @@ metadata:
   name: env-app-ingress
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
+    external-dns.alpha.kubernetes.io/target: env-app.k3s-3.monopot.xyz
+    kubernetes.io/ingress.class: traefik 
 spec:
   rules:
     - host: k3s-2.home  # gets patched
