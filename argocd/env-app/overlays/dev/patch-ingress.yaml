@@ -9,7 +9,7 @@ metadata:
     kubernetes.io/ingress.class: traefik 
 spec:
   rules:
-    - host: k3s-1.home  # gets patched
+    - host: env-app-k3s-1.monopot.xyz  # gets patched
       http:
         paths:
           - path: /
