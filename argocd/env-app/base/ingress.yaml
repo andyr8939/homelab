@@ -5,7 +5,6 @@ metadata:
   name: env-app-ingress
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
-    external-dns.alpha.kubernetes.io/target: unknown.monopot.xyz
     kubernetes.io/ingress.class: traefik
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 spec:
