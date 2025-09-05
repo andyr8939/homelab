@@ -1,0 +1,44 @@
+- name: Reset K3s cluster
+  hosts: myhosts
+  become: true
+  tasks:
+   - name: Ping my hosts
+     ansible.builtin.ping:
+    
+   - name: Uninstall K3s server if present
+     ansible.builtin.shell: /usr/local/bin/k3s-uninstall.sh
+     args:
+      removes: /usr/local/bin/k3s-uninstall.sh
+     ignore_errors: true
+
+   - name: Uninstall K3s agent if present
+     ansible.builtin.shell: /usr/local/bin/k3s-agent-uninstall.sh
+     args:
+      removes: /usr/local/bin/k3s-agent-uninstall.sh
+     ignore_errors: true
+
+   - name: Remove K3s data and configs
+     ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+     loop:
+      - /etc/rancher
+      - /var/lib/rancher
+      - /etc/cni/net.d
+      - ~/.kube/config
+
+   - name: Flush iptables filter rules
+     ansible.builtin.command: iptables -F
+     ignore_errors: true
+
+   - name: Flush iptables NAT rules
+     ansible.builtin.command: iptables -t nat -F
+     ignore_errors: true
+
+   - name: Flush iptables mangle rules
+     ansible.builtin.command: iptables -t mangle -F
+     ignore_errors: true
+
+   - name: Flush iptables raw rules
+     ansible.builtin.command: iptables -t raw -F
+     ignore_errors: true
