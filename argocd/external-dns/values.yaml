@@ -8,7 +8,7 @@ env:
         key: apiKey
 extraArgs:
   - --zone-id-filter=9e9edb7477477607ab58a4690b6e200a
-  - --txt-owner-id={{ .Values.txtOwnerId }}
+  # - --txt-owner-id={{ .Values.txtOwnerId }}
   # - --ingress-status=loadbalancer
 
 sources:
