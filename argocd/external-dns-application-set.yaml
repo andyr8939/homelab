@@ -18,8 +18,8 @@ spec:
         helm:
           valueFiles:
             - https://raw.githubusercontent.com/andyr8939/homelab/refs/heads/main/argocd/external-dns/values.yaml
-          # values: |
-          #   txtOwnerId: "{{name}}"
+          values: |
+            txtOwnerId: "{{name}}"
       destination:
         server: "{{server}}"
         namespace: default
