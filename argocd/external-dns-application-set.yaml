@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: external-dns
+  namespace: argocd
+spec:
+  generators:
+    - clusters: {}
+  template:
+    metadata:
+      name: external-dns-{{name}}
+    spec:
+      project: default
+      source:
+        repoURL: https://kubernetes-sigs.github.io/external-dns/
+        targetRevision: 1.16.1
+        chart: external-dns
+        helm:
+          valueFiles:
+            # Reference your custom values.yaml file from your repository
+            - https://raw.githubusercontent.com/your-repo/your-branch/path/to/values.yaml
+          values: |
+            txtOwnerId: "{{name}}"
+      destination:
+        server: "{{server}}"
+        namespace: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

@@ -1,0 +1,17 @@
+provider:
+  name: cloudflare
+env:
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-key
+        key: apiKey
+extraArgs:
+  - --zone-id-filter=9e9edb7477477607ab58a4690b6e200a
+  - --txt-owner-id={{ .Values.txtOwnerId }}
+  # - --ingress-status=loadbalancer
+
+sources:
+  - service
+  - ingress
+logLevel: debug
