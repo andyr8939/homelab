@@ -17,8 +17,7 @@ spec:
         chart: external-dns
         helm:
           valueFiles:
-            # Reference your custom values.yaml file from your repository
-            - https://raw.githubusercontent.com/your-repo/your-branch/path/to/values.yaml
+            - https://raw.githubusercontent.com/andyr8939/homelab/refs/heads/main/argocd/external-dns/values.yaml
           values: |
             txtOwnerId: "{{name}}"
       destination:
