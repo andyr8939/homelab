@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: stage-project
+  namespace: argocd
+spec:
+  description: Stage environment project
+  sourceRepos:
+    - https://github.com/andyr8939/homelab.git   # lock to homelab repo
+  destinations:
+    - namespace: '*'
+      server: https://k3s-2.home:6443
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'

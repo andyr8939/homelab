@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: dev-project
+  namespace: argocd
+spec:
+  description: Dev environment project
+  sourceRepos:
+    - '*'   # any repo
+  destinations:
+    - namespace: '*'
+      server: https://k3s-1.home:6443   # only dev cluster
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'

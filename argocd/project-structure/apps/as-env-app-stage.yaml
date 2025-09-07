@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: env-app-stage
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: stage
+            path: argocd/env-app/overlays/stage
+            cluster: https://k3s-2.home:6443
+            namespace: env-app
+  template:
+    metadata:
+      name: env-app-stage
+      labels:
+        env: stage
+    spec:
+      project: stage-project
+      source:
+        repoURL: https://github.com/andyr8939/homelab.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: '{{cluster}}'
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

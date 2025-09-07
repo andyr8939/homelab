@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: env-app-prod
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: prod
+            path: argocd/env-app/overlays/prod
+            cluster: https://k3s-3.home:6443
+            namespace: env-app
+  template:
+    metadata:
+      name: env-app-prod
+      labels:
+        env: prod
+    spec:
+      project: prod-project
+      source:
+        repoURL: https://github.com/andyr8939/homelab.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: '{{cluster}}'
+        namespace: '{{namespace}}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true

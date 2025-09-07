@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: prod-project
+  namespace: argocd
+spec:
+  description: Prod environment project
+  sourceRepos:
+    - https://github.com/andyr8939/homelab.git   # only trusted repo
+  destinations:
+    - namespace: env-app                         # only this namespace
+      server: https://k3s-3.home:6443           # only prod cluster
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
