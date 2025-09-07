@@ -5,15 +5,14 @@ metadata:
   namespace: argocd
 spec:
   generators:
-    - list:
-        elements:
-          - name: dev
-            path: argocd/env-app/overlays/dev
-            cluster: https://k3s-1.home:6443
-            namespace: env-app
+    - clusters:
+        selector:
+          matchLabels:
+            env: dev
   template:
     metadata:
       name: env-app-dev
+      # name: env-app-dev-{{name}}
       labels:
         env: dev
     spec:
@@ -21,10 +20,10 @@ spec:
       source:
         repoURL: https://github.com/andyr8939/homelab.git
         targetRevision: main
-        path: '{{path}}'
+        path: argocd/env-app/overlays/dev
       destination:
-        server: '{{cluster}}'
-        namespace: '{{namespace}}'
+        server: '{{server}}'
+        namespace: env-app
       syncPolicy:
         automated:
           prune: true
